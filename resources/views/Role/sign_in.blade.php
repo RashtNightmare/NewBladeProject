@@ -11,8 +11,8 @@
 <tbody>
 @for($i=0;$i < count($role);$i ++)
   <tr>
-   <td>{{$role[i]['id']}}</td>
-   <td>{{$role[i]['name']}}</td>
+   <td>{{$role[$i]['id']}}</td>
+   <td>{{$role[$i]['name']}}</td>
  </tr>
 @endfor
 <!-- 

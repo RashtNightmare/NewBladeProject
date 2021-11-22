@@ -78,7 +78,7 @@ class RoleController extends Controller
 
         try {
             $role=Role::create(["name" => $name]);
-            return view("Role.sign_in");
+            return $this->index();
             return response()->json([
                 'data' => $role,
                 'msg' => 'successfully'], 500);
