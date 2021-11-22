@@ -108,7 +108,17 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role= Role::query()->where('id',$id)->select([
+            'id','name'
+        ])->first();
+        if (!$role) {
+         return response()->json([
+                'msg' => "NOT FOUND",
+            ],200);}
+         else{
+             return view("Role.edit", compact('role'));
+         }
+
     }
 
     /**
@@ -120,7 +130,18 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //$role= SELECT *  FROM roles WHERE 'id' = $id
+        $role= Role::query()->where('id', $id)->first();
+        if (!$role) {
+            return response()->json([
+                'msg' => "NOT FOUND",
+            ], 200);
+        } else {
+            $role->name=$request->name;
+            $role->save();
+               return $this->index();
+ }
+
     }
 
     /**
@@ -131,6 +152,9 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $role= Role::query()->where('id', $id)->delete();
+        return $this->index();
+
     }
 }

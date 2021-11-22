@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::put('/role/{id}',[RoleController::class,'update'])->name('role.update');
+Route::post('/role',[RoleController::class,'store'])->name('role.store');

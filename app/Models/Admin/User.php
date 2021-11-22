@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
-    public $fillable =['name','mobile','role_id','passsword','email'];
+    protected $fillable =['name','mobile','role_id','passsword','email'];
         /**
      * The attributes that should be hidden for serialization.
      *
