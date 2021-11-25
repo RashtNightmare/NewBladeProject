@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\User;
+use App\Models\Admin\Role;
 use Exception;
 
 class UserController extends Controller
@@ -16,7 +17,28 @@ class UserController extends Controller
      */
     public function index()
     {
-        return 'test';
+        $users= User::query()->select([
+            'id','name','mobile','role_id','password','email'
+        ])->with('role')->get();
+        if (!$users){
+            return response()->json([
+                'data' => '',
+                'msg' =>"NOT FOUND"
+            ],404);
+        }else{
+            // return response()->json([
+            //     'data' => $users,
+            //     'msg' =>"SUCCESSFULLY"
+            // ],200);
+           try {
+               return view('User.all', compact('users'));
+           }
+            catch(Exception $exception){
+
+            }
+        }
+        return view('User.all',compact('users'));
+
     }
 
     /**
@@ -38,7 +60,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $role=User::create([
+            $users=User::create([
                 "name" => $request->name,
                 "email" => $request->email,
                 "mobile" => $request->mobile,
@@ -72,13 +94,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $role= User::query()->where('id',$id)->first();
-        if (!$role) {
+        $users= User::query()->where('id',$id)->with('role')->first();
+        if (!$users) {
          return response()->json([
                 'msg' => "NOT FOUND",
             ],200);}
          else{
-             return view("User.edit", compact('role'));
+             return view("User.edit", compact('users'));
          }    }
 
     /**
@@ -90,20 +112,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-  //$role= SELECT *  FROM roles WHERE 'id' = $id
-  $role= User::query()->where('id', $id)->first();
-  if (!$role) {
+  //$users= SELECT *  FROM users WHERE 'id' = $id
+  $users= User::query()->where('id', $id)->first();
+  if (!$users) {
       return response()->json([
           'msg' => "NOT FOUND",
       ], 200);
   } else {
-      $role->name=$request->name;
-      $role->mobile=$request->mobile;
-      $role->role_id=$request->role_id;
-      $role->email=$request->email;
-      $role->password=$request->password;
-      $role->save();
-         return $this->index();
+      $users->name=$request->name;
+      $users->mobile=$request->mobile;
+      $users->role_id=$request->role_id;
+      $users->email=$request->email;
+      $users->password=$request->password;
+      $users->save();
+         return view('User.all');
 }
     }
 
