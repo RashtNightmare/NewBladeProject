@@ -36,7 +36,8 @@ class RoleController extends Controller
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Role;
+use App\Models\Role;
+use App\Models\User;
 use Exception;
 
 class RoleController extends Controller
@@ -51,7 +52,7 @@ class RoleController extends Controller
         $role= Role::query()->select([
             'id','name'
         ])->get();
-        return view("Role.sign_in",compact('role'));
+        return view("Role.all",compact('role'));
 
     }
     
@@ -63,7 +64,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-            return view("Role.all");
+            return view("Role.sign_in");
     }
 
     /**
@@ -78,10 +79,10 @@ class RoleController extends Controller
 
         try {
             $role=Role::create(["name" => $name]);
-            return $this->index();
-            return response()->json([
-                'data' => $role,
-                'msg' => 'successfully'], 500);
+            return $role;
+            // return response()->json([
+            //     'data' => $role,
+            //     'msg' => 'successfully'], 500);
         } catch (Exception $exception) {
             return response()->json([
                 'data' => $exception,
@@ -97,7 +98,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        return $id;
+        // return $id;
     }
 
     /**
@@ -114,7 +115,7 @@ class RoleController extends Controller
         if (!$role) {
          return response()->json([
                 'msg' => "NOT FOUND",
-            ],200);}
+            ],404);}
          else{
              return view("Role.edit", compact('role'));
          }
@@ -135,11 +136,11 @@ class RoleController extends Controller
         if (!$role) {
             return response()->json([
                 'msg' => "NOT FOUND",
-            ], 200);
+            ], 404);
         } else {
             $role->name=$request->name;
             $role->save();
-               return $this->index();
+            return view('Role.all');
  }
 
     }

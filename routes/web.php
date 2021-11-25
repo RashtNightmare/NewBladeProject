@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\WelcomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------

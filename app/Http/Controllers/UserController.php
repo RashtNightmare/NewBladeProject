@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\User;
-use App\Models\Admin\Role;
+use App\Models\User;
+use App\Models\Role;
+
 use Exception;
 
 class UserController extends Controller
@@ -67,7 +68,7 @@ class UserController extends Controller
                 "role_id" => $request->role_id,
                 "password" => hash('sha512',$request->password,)
             ]);
-            return $this->index();
+            return $users;
         } catch (Exception $exception) {
             return response()->json([
                 'data' => $exception,
@@ -98,7 +99,7 @@ class UserController extends Controller
         if (!$users) {
          return response()->json([
                 'msg' => "NOT FOUND",
-            ],200);}
+            ],404);}
          else{
              return view("User.edit", compact('users'));
          }    }
